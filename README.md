@@ -1,1 +1,1 @@
-# CS50_AI_2025_Solutions
+# CS50's Introduction to Artificial Intelligence with Python Solutions
