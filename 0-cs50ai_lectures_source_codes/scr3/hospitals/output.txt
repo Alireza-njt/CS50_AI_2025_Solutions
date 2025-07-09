@@ -1,0 +1,13 @@
+$ python hospitals.py 
+Initial state: cost 70
+Found better neighbor: cost 67
+Found better neighbor: cost 64
+Found better neighbor: cost 60
+Found better neighbor: cost 58
+Found better neighbor: cost 56
+Found better neighbor: cost 53
+Found better neighbor: cost 50
+Found better neighbor: cost 48
+Found better neighbor: cost 46
+Found better neighbor: cost 43
+Found better neighbor: cost 42
