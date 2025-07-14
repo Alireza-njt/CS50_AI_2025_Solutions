@@ -1,7 +1,7 @@
 # name : Alireza Nejati
 # gmail address : alirezanejatiz27@gmail.com
 # github ID : Alireza-njt
-# last submit : Saturday, July 12, 2025 1:45 AM +0430
+# last submit : Saturday, July 12, 2025 1:45 AM +0330
 
 
 import sys
