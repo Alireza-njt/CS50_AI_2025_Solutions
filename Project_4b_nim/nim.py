@@ -1,4 +1,10 @@
-import math
+# name : Alireza Nejati
+# gmail address : alirezanejatiz27@gmail.com
+# github ID : Alireza-njt
+# last submit : Tuesday, July 15, 2025 2:54 AM +0330
+
+
+# import math
 import random
 import time
 
@@ -101,7 +107,9 @@ class NimAI():
         Return the Q-value for the state `state` and the action `action`.
         If no Q-value exists yet in `self.q`, return 0.
         """
-        raise NotImplementedError
+        if (tuple(state), action) in self.q.keys():
+            return self.q[(tuple(state), action)]
+        return 0
 
     def update_q_value(self, state, action, old_q, reward, future_rewards):
         """
@@ -118,7 +126,8 @@ class NimAI():
         `alpha` is the learning rate, and `new value estimate`
         is the sum of the current reward and estimated future rewards.
         """
-        raise NotImplementedError
+        new_q = old_q + self.alpha * ((future_rewards + reward) - old_q)
+        self.q[(tuple(state), action)] = new_q
 
     def best_future_reward(self, state):
         """
@@ -130,7 +139,15 @@ class NimAI():
         Q-value in `self.q`. If there are no available actions in
         `state`, return 0.
         """
-        raise NotImplementedError
+        best_q = 0
+        state_tuple = tuple(state)
+
+        for (s, a), q_value in self.q.items():
+            if s == state_tuple:
+                if q_value > best_q:
+                    best_q = q_value
+
+        return best_q
 
     def choose_action(self, state, epsilon=True):
         """
@@ -147,7 +164,33 @@ class NimAI():
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
-        raise NotImplementedError
+        candidates = []
+
+        for (s, a), q_value in self.q.items():
+            if s == tuple(state):
+                candidates.append((s, a, q_value))
+
+        if not candidates:
+            actions = list(Nim.available_actions(state))
+            random_number = random.randint(0, len(actions)-1)
+            return actions[random_number]
+
+        if epsilon is True:
+            random_candidate = random.randint(0, len(candidates)-1)
+            return candidates[random_candidate][1]
+
+        else:
+            best_q = -1000
+            result = None
+            for c in candidates:
+                if c[2] > best_q:
+                    result = c[1]
+                    best_q = c[2]
+                elif c[2] == best_q:
+                    random_number = random.randint(0, 1)
+                    if random_number == 1:
+                        result = c[1]
+            return result
 
 
 def train(n):
