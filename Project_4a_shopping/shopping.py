@@ -1,3 +1,9 @@
+# name : Alireza Nejati
+# gmail address : alirezanejatiz27@gmail.com
+# github ID : Alireza-njt
+# last submit : Monday, July 14, 2025 6:02 PM +0330
+
+
 import csv
 import sys
 
@@ -59,7 +65,56 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
-    raise NotImplementedError
+
+    def month_mapping_to_int(month):
+        month = month.capitalize()
+        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        for i in range(len(months)):
+            if months[i] == month:
+                return i
+
+    def bool_mapping_to_int(b):
+        if b == 'TRUE':
+            return 1
+        return 0
+
+    def visitorType_mapping_to_int(v_type):
+        if v_type == 'Returning_Visitor':
+            return 1
+        return 0
+
+    int_items = ['Administrative', 'Informational', 'ProductRelated',
+                 'OperatingSystems', 'Browser', 'Region', 'TrafficType']
+    float_items = ['Administrative_Duration', 'Informational_Duration',
+                   'ProductRelated_Duration', 'BounceRates', 'ExitRates', 'PageValues', 'SpecialDay']
+    labels = []
+    evidence = []
+    with open(filename, mode='r', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        i = 0
+        for row in reader:
+            if i != 0:
+                labels.append(bool_mapping_to_int(row[len(row)-1]))
+                evidence_for_row = []
+                for j in range(len(row)-1):
+                    if header[j] in int_items:
+                        evidence_for_row.append(int(row[j]))
+                    elif header[j] in float_items:
+                        evidence_for_row.append(float(row[j]))
+                    elif header[j] == 'Month':
+                        evidence_for_row.append(month_mapping_to_int(row[j]))
+                    elif header[j] == 'VisitorType':
+                        evidence_for_row.append(visitorType_mapping_to_int(row[j]))
+
+                evidence.append(evidence_for_row)
+
+            else:
+                header = row.copy()
+
+            i += 1
+
+    return evidence, labels
 
 
 def train_model(evidence, labels):
@@ -67,7 +122,9 @@ def train_model(evidence, labels):
     Given a list of evidence lists and a list of labels, return a
     fitted k-nearest neighbor model (k=1) trained on the data.
     """
-    raise NotImplementedError
+    fknn_model = KNeighborsClassifier(n_neighbors=1)  # fitted k-nearest neighbor model (k=1)
+    fknn_model.fit(evidence, labels)
+    return fknn_model
 
 
 def evaluate(labels, predictions):
@@ -85,7 +142,22 @@ def evaluate(labels, predictions):
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
-    raise NotImplementedError
+    sensitivity, specificity = 0, 0
+    actual_positive_labels_numbers = 0
+    actual_negative_labels_numbers = 0
+    for i in range(len(predictions)):
+        if labels[i] == predictions[i] == 1:
+            sensitivity += 1
+        elif labels[i] == predictions[i] == 0:
+            specificity += 1
+    for i in range(len(labels)):
+        if labels[i] == 1:
+            actual_positive_labels_numbers += 1
+        elif labels[i] == 0:
+            actual_negative_labels_numbers += 1
+    sensitivity /= actual_positive_labels_numbers
+    specificity /= actual_negative_labels_numbers
+    return sensitivity, specificity
 
 
 if __name__ == "__main__":
