@@ -1,7 +1,7 @@
 # name : Alireza Nejati
 # gmail address : alirezanejatiz27@gmail.com
 # github ID : Alireza-njt
-# last submit : Tuesday, July 8, 2025 5:40 PM +0430
+# last submit : Tuesday, July 8, 2025 5:40 PM +0330
 
 
 import csv
