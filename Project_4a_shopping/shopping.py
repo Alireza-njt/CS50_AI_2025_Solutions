@@ -106,6 +106,8 @@ def load_data(filename):
                         evidence_for_row.append(month_mapping_to_int(row[j]))
                     elif header[j] == 'VisitorType':
                         evidence_for_row.append(visitorType_mapping_to_int(row[j]))
+                    elif header[j] == 'Weekend' :
+                        evidence_for_row.append(bool_mapping_to_int(row[j]))
 
                 evidence.append(evidence_for_row)
 
