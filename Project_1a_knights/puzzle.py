@@ -1,7 +1,7 @@
 # name : Alireza Nejati
 # gmail address : alirezanejatiz27@gmail.com
 # github ID : Alireza-njt
-# last submit : Wednesday, August 21, 2024 10:33 PM +0430
+# last submit : Wednesday, August 21, 2024 10:33 PM +0330
 
 
 from logic import *
