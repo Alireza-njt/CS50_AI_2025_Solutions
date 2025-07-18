@@ -1,3 +1,9 @@
+# name : Alireza Nejati
+# gmail address : alirezanejatiz27@gmail.com
+# github ID : Alireza-njt
+# last submit : Saturday, July 19, 2025 1:54 AM +0330
+
+
 import nltk
 import sys
 
@@ -15,7 +21,13 @@ V -> "smiled" | "tell" | "were"
 """
 
 NONTERMINALS = """
-S -> N V
+S -> NP VP | S Conj S
+
+VP -> V | V NP | V NP PP | V PP | VP Conj VP
+NP -> N | Det N | Det AdjP N | Det N PP | AdjP N
+AdjP -> Adj | Adj AdjP
+PP -> P NP
+
 """
 
 grammar = nltk.CFG.fromstring(NONTERMINALS + TERMINALS)
@@ -62,7 +74,20 @@ def preprocess(sentence):
     and removing any word that does not contain at least one alphabetic
     character.
     """
-    raise NotImplementedError
+    tokens = nltk.word_tokenize(sentence)
+    result = []
+    for t in tokens:
+        append_to_result_sw = True
+        for char in t:
+            ascii_code = ord(char)
+            if (ascii_code >= ord('a') and ascii_code <= ord('z')) or (ascii_code >= ord('A') and ascii_code <= ord('Z')):
+                pass
+            else:
+                append_to_result_sw = False
+        if append_to_result_sw:
+            result.append(t.lower())
+
+    return result
 
 
 def np_chunk(tree):
@@ -72,7 +97,19 @@ def np_chunk(tree):
     whose label is "NP" that does not itself contain any other
     noun phrases as subtrees.
     """
-    raise NotImplementedError
+    chunks = []
+
+    for np_subtree in tree.subtrees(filter=lambda t: t.label() == "NP"):
+        has_nested_np = any(
+            child.label() == "NP"
+            for child in np_subtree.subtrees()
+            if child != np_subtree
+        )
+
+        if not has_nested_np:
+            chunks.append(np_subtree)
+
+    return chunks
 
 
 if __name__ == "__main__":
