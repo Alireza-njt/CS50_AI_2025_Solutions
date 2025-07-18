@@ -1,3 +1,9 @@
+# name : Alireza Nejati
+# gmail address : alirezanejatiz27@gmail.com
+# github ID : Alireza-njt
+# last submit : Saturday, July 19, 2025 2:54 AM +0330
+
+
 import sys
 import tensorflow as tf
 
@@ -45,9 +51,13 @@ def get_mask_token_index(mask_token_id, inputs):
     Return the index of the token with the specified `mask_token_id`, or
     `None` if not present in the `inputs`.
     """
-    # TODO: Implement this function
-    raise NotImplementedError
+    token_sequence = inputs["input_ids"].numpy()[0]
 
+    for position, current_id in enumerate(token_sequence):
+        if current_id == mask_token_id:
+            return position
+
+    return None
 
 
 def get_color_for_attention_score(attention_score):
@@ -55,9 +65,9 @@ def get_color_for_attention_score(attention_score):
     Return a tuple of three integers representing a shade of gray for the
     given `attention_score`. Each value should be in the range [0, 255].
     """
-    # TODO: Implement this function
-    raise NotImplementedError
-
+    gray = int(attention_score * 255)
+    result = gray, gray, gray
+    return result
 
 
 def visualize_attentions(tokens, attentions):
@@ -70,13 +80,17 @@ def visualize_attentions(tokens, attentions):
     include both the layer number (starting count from 1) and head number
     (starting count from 1).
     """
-    # TODO: Update this function to produce diagrams for all layers and heads.
-    generate_diagram(
-        1,
-        1,
-        tokens,
-        attentions[0][0][0]
-    )
+    layers_size = len(attentions)
+    heads_size = attentions[0].shape[2]
+
+    for l in range(layers_size):
+        for h in range(heads_size):
+            generate_diagram(
+                l + 1,
+                h + 1,
+                tokens,
+                attentions[l][0][h].numpy()
+            )
 
 
 def generate_diagram(layer_number, head_number, tokens, attention_weights):
