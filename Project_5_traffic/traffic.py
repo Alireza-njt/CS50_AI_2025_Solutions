@@ -1,3 +1,9 @@
+# name : Alireza Nejati
+# gmail address : alirezanejatiz27@gmail.com
+# github ID : Alireza-njt
+# last submit : Friday, July 18, 2025 5:52 AM +0330
+
+
 import cv2
 import numpy as np
 import os
@@ -5,6 +11,7 @@ import sys
 import tensorflow as tf
 
 from sklearn.model_selection import train_test_split
+
 
 EPOCHS = 10
 IMG_WIDTH = 30
@@ -58,7 +65,19 @@ def load_data(data_dir):
     be a list of integer labels, representing the categories for each of the
     corresponding `images`.
     """
-    raise NotImplementedError
+    images = []
+    labels = []
+    for i in range(NUM_CATEGORIES):
+        category = os.path.join(data_dir, str(i))
+        images_name_list_in_category = sorted(
+            [image.name for image in os.scandir(category) if image.is_file()])
+        for imn in images_name_list_in_category:
+            original_image = cv2.imread(os.path.join(category, imn))
+            resized_image = cv2.resize(original_image, (IMG_WIDTH, IMG_HEIGHT))
+            images.append(resized_image)
+            labels.append(i)
+
+    return images, labels
 
 
 def get_model():
@@ -67,7 +86,32 @@ def get_model():
     `input_shape` of the first layer is `(IMG_WIDTH, IMG_HEIGHT, 3)`.
     The output layer should have `NUM_CATEGORIES` units, one for each category.
     """
-    raise NotImplementedError
+    model = tf.keras.Sequential([
+
+        tf.keras.layers.Conv2D(46, (4, 4), activation='relu',
+                               input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)),
+        tf.keras.layers.MaxPooling2D(pool_size=(3, 3)),
+
+        tf.keras.layers.Conv2D(92, (4, 4), activation='relu'),
+        tf.keras.layers.MaxPooling2D(pool_size=(3, 3)),
+
+        tf.keras.layers.Flatten(),
+
+        tf.keras.layers.Dense(184, activation='relu'),
+        tf.keras.layers.Dropout(0.44),
+
+        tf.keras.layers.Dense(NUM_CATEGORIES, activation='softmax')
+
+
+    ])
+
+    model.compile(
+        optimizer='adam',
+        loss='categorical_crossentropy',
+        metrics=['accuracy']
+    )
+
+    return model
 
 
 if __name__ == "__main__":
