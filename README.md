@@ -1,6 +1,6 @@
 # CS50's Introduction to Artificial Intelligence with Python Solutions
 
-[](./CS50AI_pll.png)
+![](./CS50AI_pll.png)
 
 This repository contains my solutions to the problem sets from CS50’s Introduction to Artificial Intelligence with Python, an online course offered by Harvard University. The course covers fundamental AI concepts and their implementation using Python, including search algorithms, optimization techniques, machine learning, and reinforcement learning.
 
